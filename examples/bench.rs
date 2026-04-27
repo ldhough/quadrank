@@ -312,24 +312,24 @@ fn bench_quad(seq: &[u64], queries: &QS) {
 fn bench_binary(seq: &[u64], queries: &QS) {
     bench_header();
 
-    bench_one_binary::<qwt::RSNarrow>(seq, queries);
+    // bench_one_binary::<qwt::RSNarrow>(seq, queries);
     bench_one_binary::<qwt::RSWide>(seq, queries);
 
-    bench_one_binary::<genedex::Condensed64>(seq, queries);
-    bench_one_binary::<genedex::Condensed512>(seq, queries);
+    // bench_one_binary::<genedex::Condensed64>(seq, queries);
+    // bench_one_binary::<genedex::Condensed512>(seq, queries);
 
     bench_one_binary::<bitm::RankSelect101111>(seq, queries);
 
     bench_one_binary::<Rank9>(seq, queries);
-    bench_one_binary::<RankSmall0>(seq, queries);
-    bench_one_binary::<RankSmall1>(seq, queries);
-    bench_one_binary::<RankSmall2>(seq, queries);
+    // bench_one_binary::<RankSmall0>(seq, queries);
+    // bench_one_binary::<RankSmall1>(seq, queries);
+    // bench_one_binary::<RankSmall2>(seq, queries);
     bench_one_binary::<RankSmall3>(seq, queries);
-    bench_one_binary::<RankSmall4>(seq, queries);
+    // bench_one_binary::<RankSmall4>(seq, queries);
 
-    bench_one_binary::<binary::BiRank<BinaryBlock64x2>>(seq, queries);
-    bench_one_binary::<binary::BiRank<BinaryBlock32x2>>(seq, queries);
-    bench_one_binary::<binary::BiRank<BinaryBlock16x2>>(seq, queries);
+    // bench_one_binary::<binary::BiRank<BinaryBlock64x2>>(seq, queries);
+    // bench_one_binary::<binary::BiRank<BinaryBlock32x2>>(seq, queries);
+    // bench_one_binary::<binary::BiRank<BinaryBlock16x2>>(seq, queries);
     bench_one_binary::<binary::BiRank<BinaryBlock16>>(seq, queries);
     bench_one_binary::<binary::BiRank<BinaryBlock16Spider>>(seq, queries);
     // bench_one_binary::<binary::Ranker<BinaryBlock16Spider2>>(seq, queries);

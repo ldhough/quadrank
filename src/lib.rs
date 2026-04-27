@@ -72,6 +72,12 @@ pub mod ext {
 pub use binary::{BiRank, BiRanker};
 pub use quad::{QuadRank, QuadRanker};
 
+#[unsafe(no_mangle)]
+#[inline(never)]
+pub fn birank16_rank(r: &BiRank, pos: usize) -> u64 {
+    unsafe { r.rank_unchecked(pos) }
+}
+
 // Type aliases
 /// Binary rank structure with 3.28% space overhead.
 /// Smallest, and usually sufficiently fast.

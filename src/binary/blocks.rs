@@ -2,6 +2,28 @@ use std::hint::assert_unchecked;
 
 use super::BasicBlock;
 
+#[cfg(feature = "simd-popc")]
+#[target_feature(enable = "avx2,avx512f,avx512vl,avx512vpopcntdq")]
+#[inline]
+unsafe fn simd_popcnt_masked256(
+    vec_ptr: *const std::arch::x86_64::__m256i,
+    mask_ptr: *const std::arch::x86_64::__m256i,
+) -> u32 {
+    use std::arch::x86_64::*;
+    unsafe {
+        let v = _mm256_loadu_si256(vec_ptr);
+        let m = _mm256_loadu_si256(mask_ptr);
+        let masked = _mm256_and_si256(v, m);
+        let pc = _mm256_popcnt_epi64(masked);
+        let hi = _mm256_extracti128_si256::<1>(pc);
+        let lo = _mm256_castsi256_si128(pc);
+        let sum = _mm_add_epi64(lo, hi);
+        let shuf = _mm_shuffle_epi32::<0xee>(sum);
+        let total = _mm_add_epi64(sum, shuf);
+        _mm_cvtsi128_si64(total) as u32
+    }
+}
+
 /// Store two u64 offsets, to end of first and third 128bit block.
 #[repr(align(64))]
 #[repr(C)]
@@ -317,14 +339,47 @@ impl BasicBlock for BinaryBlock16 {
         let half = pos / 256;
         let pos = pos;
 
+        #[cfg(not(feature = "simd-popc"))]
         let [m0, m1, m2, m3] = BINARY_MID_MASKS256[pos];
         // NOTE: This *will* go out-of-bounds, but it's ok because 'ranks' is used as padding.
+        #[cfg(not(feature = "simd-popc"))]
         let [v0, v1, v2, v3]: [u64; 4] =
             unsafe { self.seq.as_ptr().cast::<[u64; 4]>().add(half).read() };
+
+        #[cfg(feature = "simd-popc")]
+        let inner_count = unsafe {
+            simd_popcnt_masked256(
+                self.seq.as_ptr().cast::<std::arch::x86_64::__m256i>().add(half),
+                BINARY_MID_MASKS256.as_ptr().cast::<std::arch::x86_64::__m256i>().add(pos),
+            )
+        };
+
+        #[cfg(all(feature = "scalar-popcnt", not(feature = "simd-popc")))]
+        let inner_count = unsafe {
+            let total: u64;
+            std::arch::asm!(
+                "popcnt {t}, {v0}",
+                "popcnt {v1}, {v1}",
+                "add {t}, {v1}",
+                "popcnt {v2}, {v2}",
+                "add {t}, {v2}",
+                "popcnt {v3}, {v3}",
+                "add {t}, {v3}",
+                v0 = in(reg) (v0 & m0),
+                v1 = in(reg) (v1 & m1),
+                v2 = in(reg) (v2 & m2),
+                v3 = in(reg) (v3 & m3),
+                t = out(reg) total,
+            );
+            total as u32
+        };
+
+        #[cfg(all(not(feature = "simd-popc"), not(feature = "scalar-popcnt")))]
         let inner_count = (v0 & m0).count_ones()
             + (v1 & m1).count_ones()
             + (v2 & m2).count_ones()
             + (v3 & m3).count_ones();
+
         if pos < 256 {
             self.rank as u64 - inner_count as u64
         } else {
