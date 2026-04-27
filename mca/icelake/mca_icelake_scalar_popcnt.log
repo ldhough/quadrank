@@ -1,0 +1,234 @@
+Iterations:        10000
+Instructions:      550000
+Total Cycles:      350006
+Total uOps:        790000
+
+Dispatch Width:    6
+uOps Per Cycle:    2.26
+IPC:               1.57
+Block RThroughput: 13.2
+
+
+Cycles with backend pressure increase [ 40.00% ]
+Throughput Bottlenecks: 
+  Resource Pressure       [ 8.58% ]
+  - ICXPort0  [ 0.00% ]
+  - ICXPort1  [ 8.58% ]
+  - ICXPort2  [ 0.00% ]
+  - ICXPort3  [ 0.00% ]
+  - ICXPort5  [ 2.86% ]
+  - ICXPort6  [ 0.01% ]
+  Data Dependencies:      [ 40.00% ]
+  - Register Dependencies [ 40.00% ]
+  - Memory Dependencies   [ 0.00% ]
+
+Critical sequence based on the simulation:
+
+              Instruction                                 Dependency Information
+ +----< 53.   pop	r15
+ |
+ |    < loop carried > 
+ |
+ +----> 0.    push	r15                               ## REGISTER dependency:  rsp
+ +----> 1.    push	r14                               ## REGISTER dependency:  rsp
+ +----> 2.    push	r12                               ## REGISTER dependency:  rsp
+ +----> 3.    push	rbx                               ## REGISTER dependency:  rsp
+ +----> 4.    push	rax                               ## REGISTER dependency:  rsp
+ |      5.    mov	rdx, rsi
+ |      6.    shr	rdx, 4
+ |      7.    movabs	rax, 595056260442243601
+ |      8.    mulx	rcx, rcx, rax
+ |      9.    imul	r8, rcx, 496
+ |      10.   mov	rdx, rsi
+ |      11.   sub	rdx, r8
+ |      12.   mov	r8, qword ptr [rdi + 8]
+ |      13.   shl	rcx, 6
+ |      14.   lea	r9, [r8 + rcx]
+ |      15.   mov	r10d, edx
+ |      16.   shl	r10d, 5
+ |      17.   mov	ebx, edx
+ |      18.   shr	ebx, 3
+ |      19.   and	ebx, 32
+ |      20.   mov	r14, qword ptr [rbx + r9]
+ |      21.   mov	r15, qword ptr [rbx + r9 + 8]
+ |      22.   mov	r12, qword ptr [rbx + r9 + 16]
+ |      23.   and	r14, qword ptr [r11 + r10]
+ |      24.   and	r15, qword ptr [r11 + r10 + 8]
+ |      25.   and	r12, qword ptr [r11 + r10 + 16]
+ |      26.   mov	r9, qword ptr [rbx + r9 + 24]
+ |      27.   and	r9, qword ptr [r11 + r10 + 24]
+ |      28.   popcnt	r10, r14
+ |      29.   popcnt	r15, r15
+ |      30.   add	r10, r15
+ |      31.   popcnt	r12, r12
+ |      32.   add	r10, r12
+ |      33.   popcnt	r9, r9
+ |      34.   add	r10, r9
+ |      35.   mov	r9d, r10d
+ |      36.   mov	r10, r9
+ |      37.   neg	r10
+ |      38.   cmp	rdx, 256
+ |      39.   movzx	ecx, word ptr [r8 + rcx + 62]
+ |      40.   cmovae	r10, r9
+ |      41.   shr	rsi, 11
+ |      42.   mov	rdx, rsi
+ |      43.   mulx	rax, rax, rax
+ |      44.   mov	rdx, qword ptr [rdi + 32]
+ |      45.   mov	eax, dword ptr [rdx + 4*rax]
+ |      46.   shl	rax, 11
+ |      47.   add	rax, rcx
+ |      48.   add	rax, r10
+ +----> 49.   add	rsp, 8                            ## REGISTER dependency:  rsp
+ +----> 50.   pop	rbx                               ## REGISTER dependency:  rsp
+ +----> 51.   pop	r12                               ## REGISTER dependency:  rsp
+ +----> 52.   pop	r14                               ## REGISTER dependency:  rsp
+ +----> 53.   pop	r15                               ## REGISTER dependency:  rsp
+ |      54.   ret
+ |
+ |    < loop carried > 
+ |
+ +----> 0.    push	r15                               ## REGISTER dependency:  rsp
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 3      2     1.00           *            push	r15
+ 3      2     1.00           *            push	r14
+ 3      2     1.00           *            push	r12
+ 3      2     1.00           *            push	rbx
+ 3      2     1.00           *            push	rax
+ 1      1     0.25                        mov	rdx, rsi
+ 1      1     0.50                        shr	rdx, 4
+ 1      1     0.25                        movabs	rax, 595056260442243601
+ 3      4     1.00                        mulx	rcx, rcx, rax
+ 1      3     1.00                        imul	r8, rcx, 496
+ 1      1     0.25                        mov	rdx, rsi
+ 1      1     0.25                        sub	rdx, r8
+ 1      5     0.50    *                   mov	r8, qword ptr [rdi + 8]
+ 1      1     0.50                        shl	rcx, 6
+ 1      1     0.50                        lea	r9, [r8 + rcx]
+ 1      1     0.25                        mov	r10d, edx
+ 1      1     0.50                        shl	r10d, 5
+ 1      1     0.25                        mov	ebx, edx
+ 1      1     0.50                        shr	ebx, 3
+ 1      1     0.25                        and	ebx, 32
+ 1      5     0.50    *                   mov	r14, qword ptr [rbx + r9]
+ 1      5     0.50    *                   mov	r15, qword ptr [rbx + r9 + 8]
+ 1      5     0.50    *                   mov	r12, qword ptr [rbx + r9 + 16]
+ 2      6     0.50    *                   and	r14, qword ptr [r11 + r10]
+ 2      6     0.50    *                   and	r15, qword ptr [r11 + r10 + 8]
+ 2      6     0.50    *                   and	r12, qword ptr [r11 + r10 + 16]
+ 1      5     0.50    *                   mov	r9, qword ptr [rbx + r9 + 24]
+ 2      6     0.50    *                   and	r9, qword ptr [r11 + r10 + 24]
+ 1      3     1.00                        popcnt	r10, r14
+ 1      3     1.00                        popcnt	r15, r15
+ 1      1     0.25                        add	r10, r15
+ 1      3     1.00                        popcnt	r12, r12
+ 1      1     0.25                        add	r10, r12
+ 1      3     1.00                        popcnt	r9, r9
+ 1      1     0.25                        add	r10, r9
+ 1      1     0.25                        mov	r9d, r10d
+ 1      1     0.25                        mov	r10, r9
+ 1      1     0.25                        neg	r10
+ 1      1     0.25                        cmp	rdx, 256
+ 1      5     0.50    *                   movzx	ecx, word ptr [r8 + rcx + 62]
+ 1      1     0.50                        cmovae	r10, r9
+ 1      1     0.50                        shr	rsi, 11
+ 1      1     0.25                        mov	rdx, rsi
+ 3      4     1.00                        mulx	rax, rax, rax
+ 1      5     0.50    *                   mov	rdx, qword ptr [rdi + 32]
+ 1      5     0.50    *                   mov	eax, dword ptr [rdx + 4*rax]
+ 1      1     0.50                        shl	rax, 11
+ 1      1     0.25                        add	rax, rcx
+ 1      1     0.25                        add	rax, r10
+ 1      1     0.25                        add	rsp, 8
+ 2      6     0.50    *                   pop	rbx
+ 2      6     0.50    *                   pop	r12
+ 2      6     0.50    *                   pop	r14
+ 2      6     0.50    *                   pop	r15
+ 3      7     1.00                  U     ret
+
+
+Resources:
+[0]   - ICXDivider
+[1]   - ICXFPDivider
+[2]   - ICXPort0
+[3]   - ICXPort1
+[4]   - ICXPort2
+[5]   - ICXPort3
+[6]   - ICXPort4
+[7]   - ICXPort5
+[8]   - ICXPort6
+[9]   - ICXPort7
+[10]  - ICXPort8
+[11]  - ICXPort9
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   
+ -      -     12.00  14.00  9.00   10.00  5.00   12.00  12.00  3.00    -      -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   Instructions:
+ -      -      -      -      -      -     1.00    -     1.00   1.00    -      -     push	r15
+ -      -      -      -      -      -     1.00   1.00    -     1.00    -      -     push	r14
+ -      -     1.00    -      -     1.00   1.00    -      -      -      -      -     push	r12
+ -      -      -      -      -      -     1.00    -     1.00   1.00    -      -     push	rbx
+ -      -      -      -      -     1.00   1.00    -     1.00    -      -      -     push	rax
+ -      -      -     1.00    -      -      -      -      -      -      -      -     mov	rdx, rsi
+ -      -      -      -      -      -      -      -     1.00    -      -      -     shr	rdx, 4
+ -      -      -      -      -      -      -     1.00    -      -      -      -     movabs	rax, 595056260442243601
+ -      -      -     1.00    -      -      -     1.00    -      -      -      -     mulx	rcx, rcx, rax
+ -      -      -     1.00    -      -      -      -      -      -      -      -     imul	r8, rcx, 496
+ -      -      -     1.00    -      -      -      -      -      -      -      -     mov	rdx, rsi
+ -      -      -      -      -      -      -      -     1.00    -      -      -     sub	rdx, r8
+ -      -      -      -      -     1.00    -      -      -      -      -      -     mov	r8, qword ptr [rdi + 8]
+ -      -      -      -      -      -      -      -     1.00    -      -      -     shl	rcx, 6
+ -      -      -      -      -      -      -     1.00    -      -      -      -     lea	r9, [r8 + rcx]
+ -      -      -     1.00    -      -      -      -      -      -      -      -     mov	r10d, edx
+ -      -      -      -      -      -      -      -     1.00    -      -      -     shl	r10d, 5
+ -      -      -      -      -      -      -      -     1.00    -      -      -     mov	ebx, edx
+ -      -     1.00    -      -      -      -      -      -      -      -      -     shr	ebx, 3
+ -      -      -      -      -      -      -     1.00    -      -      -      -     and	ebx, 32
+ -      -      -      -     1.00    -      -      -      -      -      -      -     mov	r14, qword ptr [rbx + r9]
+ -      -      -      -      -     1.00    -      -      -      -      -      -     mov	r15, qword ptr [rbx + r9 + 8]
+ -      -      -      -     1.00    -      -      -      -      -      -      -     mov	r12, qword ptr [rbx + r9 + 16]
+ -      -      -      -      -     1.00    -      -     1.00    -      -      -     and	r14, qword ptr [r11 + r10]
+ -      -      -      -     1.00    -      -     1.00    -      -      -      -     and	r15, qword ptr [r11 + r10 + 8]
+ -      -      -     1.00    -     1.00    -      -      -      -      -      -     and	r12, qword ptr [r11 + r10 + 16]
+ -      -      -      -     1.00    -      -      -      -      -      -      -     mov	r9, qword ptr [rbx + r9 + 24]
+ -      -     1.00    -      -     1.00    -      -      -      -      -      -     and	r9, qword ptr [r11 + r10 + 24]
+ -      -      -     1.00    -      -      -      -      -      -      -      -     popcnt	r10, r14
+ -      -      -     1.00    -      -      -      -      -      -      -      -     popcnt	r15, r15
+ -      -      -      -      -      -      -     1.00    -      -      -      -     add	r10, r15
+ -      -      -     1.00    -      -      -      -      -      -      -      -     popcnt	r12, r12
+ -      -     1.00    -      -      -      -      -      -      -      -      -     add	r10, r12
+ -      -      -     1.00    -      -      -      -      -      -      -      -     popcnt	r9, r9
+ -      -     1.00    -      -      -      -      -      -      -      -      -     add	r10, r9
+ -      -      -      -      -      -      -      -     1.00    -      -      -     mov	r9d, r10d
+ -      -      -     1.00    -      -      -      -      -      -      -      -     mov	r10, r9
+ -      -      -      -      -      -      -      -     1.00    -      -      -     neg	r10
+ -      -      -      -      -      -      -     1.00    -      -      -      -     cmp	rdx, 256
+ -      -      -      -     1.00    -      -      -      -      -      -      -     movzx	ecx, word ptr [r8 + rcx + 62]
+ -      -     1.00    -      -      -      -      -      -      -      -      -     cmovae	r10, r9
+ -      -     1.00    -      -      -      -      -      -      -      -      -     shr	rsi, 11
+ -      -     1.00    -      -      -      -      -      -      -      -      -     mov	rdx, rsi
+ -      -      -     1.00    -      -      -     1.00    -      -      -      -     mulx	rax, rax, rax
+ -      -      -      -     1.00    -      -      -      -      -      -      -     mov	rdx, qword ptr [rdi + 32]
+ -      -      -      -      -     1.00    -      -      -      -      -      -     mov	eax, dword ptr [rdx + 4*rax]
+ -      -     1.00    -      -      -      -      -      -      -      -      -     shl	rax, 11
+ -      -      -     1.00    -      -      -      -      -      -      -      -     add	rax, rcx
+ -      -     1.00    -      -      -      -      -      -      -      -      -     add	rax, r10
+ -      -      -      -      -      -      -     1.00    -      -      -      -     add	rsp, 8
+ -      -     1.00    -     1.00    -      -      -      -      -      -      -     pop	rbx
+ -      -      -      -     1.00    -      -     1.00    -      -      -      -     pop	r12
+ -      -     1.00    -      -     1.00    -      -      -      -      -      -     pop	r14
+ -      -      -     1.00    -     1.00    -      -      -      -      -      -     pop	r15
+ -      -      -      -     1.00    -      -     1.00   1.00    -      -      -     ret

@@ -1,0 +1,186 @@
+Iterations:        10000
+Instructions:      390000
+Total Cycles:      100810
+Total uOps:        530000
+
+Dispatch Width:    6
+uOps Per Cycle:    5.26
+IPC:               3.87
+Block RThroughput: 8.8
+
+
+Cycles with backend pressure increase [ 49.64% ]
+Throughput Bottlenecks: 
+  Resource Pressure       [ 45.80% ]
+  - ICXPort0  [ 33.56% ]
+  - ICXPort1  [ 38.94% ]
+  - ICXPort2  [ 1.54% ]
+  - ICXPort3  [ 1.54% ]
+  - ICXPort5  [ 39.70% ]
+  - ICXPort6  [ 33.82% ]
+  Data Dependencies:      [ 33.88% ]
+  - Register Dependencies [ 33.88% ]
+  - Memory Dependencies   [ 0.00% ]
+
+Critical sequence based on the simulation:
+
+              Instruction                                 Dependency Information
+ +----< 36.   pop	rbx
+ |
+ |    < loop carried > 
+ |
+ +----> 0.    push	rbx                               ## REGISTER dependency:  rsp
+ +----> 1.    mov	rdx, rsi                          ## RESOURCE interference:  ICXPort5 [ probability: 0% ]
+ +----> 2.    shr	rdx, 4                            ## REGISTER dependency:  rdx
+ |      3.    movabs	rax, 595056260442243601
+ +----> 4.    mulx	rcx, rcx, rax                     ## REGISTER dependency:  rdx
+ +----> 5.    imul	rdx, rcx, 496                     ## REGISTER dependency:  rcx
+ |      6.    mov	r8, rsi
+ +----> 7.    sub	r8, rdx                           ## REGISTER dependency:  rdx
+ |      8.    shl	rcx, 6
+ |      9.    mov	rdx, qword ptr [rdi + 8]
+ |      10.   lea	r9, [rdx + rcx]
+ +----> 11.   mov	r10d, r8d                         ## REGISTER dependency:  r8
+ +----> 12.   shl	r10d, 5                           ## REGISTER dependency:  r10d
+ |      13.   mov	ebx, r8d
+ |      14.   shr	ebx, 3
+ |      15.   and	ebx, 32
+ |      16.   vmovdqu	ymm0, ymmword ptr [rbx + r9]
+ +----> 17.   vpand	ymm0, ymm0, ymmword ptr [r11 + r10] ## REGISTER dependency:  r10d
+ |      18.   mov	rdi, qword ptr [rdi + 32]
+ +----> 19.   vpopcntq	ymm0, ymm0                        ## REGISTER dependency:  ymm0
+ +----> 20.   vpmovqb	xmm0, ymm0                        ## REGISTER dependency:  ymm0
+ |      21.   vpxor	xmm1, xmm1, xmm1
+ +----> 22.   vpsadbw	xmm0, xmm0, xmm1                  ## REGISTER dependency:  xmm0
+ +----> 23.   vmovq	r9, xmm0                          ## REGISTER dependency:  xmm0
+ +----> 24.   mov	r10, r9                           ## REGISTER dependency:  r9
+ |      25.   neg	r10
+ |      26.   cmp	r8, 256
+ |      27.   movzx	ecx, word ptr [rdx + rcx + 62]
+ |      28.   cmovae	r10, r9
+ +----> 29.   shr	rsi, 11                           ## RESOURCE interference:  ICXPort0 [ probability: 2% ]
+ +----> 30.   mov	rdx, rsi                          ## REGISTER dependency:  rsi
+ +----> 31.   mulx	rax, rax, rax                     ## REGISTER dependency:  rdx
+ +----> 32.   mov	eax, dword ptr [rdi + 4*rax]      ## REGISTER dependency:  rax
+ +----> 33.   shl	rax, 11                           ## REGISTER dependency:  eax
+ |      34.   add	rax, rcx
+ |      35.   add	rax, r10
+ +----> 36.   pop	rbx                               ## RESOURCE interference:  ICXPort6 [ probability: 2% ]
+ |      37.   vzeroupper
+ |      38.   ret
+ |
+ |    < loop carried > 
+ |
+ +----> 0.    push	rbx                               ## REGISTER dependency:  rsp
+
+
+Instruction Info:
+[1]: #uOps
+[2]: Latency
+[3]: RThroughput
+[4]: MayLoad
+[5]: MayStore
+[6]: HasSideEffects (U)
+
+[1]    [2]    [3]    [4]    [5]    [6]    Instructions:
+ 3      2     1.00           *            push	rbx
+ 1      1     0.25                        mov	rdx, rsi
+ 1      1     0.50                        shr	rdx, 4
+ 1      1     0.25                        movabs	rax, 595056260442243601
+ 3      4     1.00                        mulx	rcx, rcx, rax
+ 1      3     1.00                        imul	rdx, rcx, 496
+ 1      1     0.25                        mov	r8, rsi
+ 1      1     0.25                        sub	r8, rdx
+ 1      1     0.50                        shl	rcx, 6
+ 1      5     0.50    *                   mov	rdx, qword ptr [rdi + 8]
+ 1      1     0.50                        lea	r9, [rdx + rcx]
+ 1      1     0.25                        mov	r10d, r8d
+ 1      1     0.50                        shl	r10d, 5
+ 1      1     0.25                        mov	ebx, r8d
+ 1      1     0.50                        shr	ebx, 3
+ 1      1     0.25                        and	ebx, 32
+ 1      7     0.50    *                   vmovdqu	ymm0, ymmword ptr [rbx + r9]
+ 2      8     0.50    *                   vpand	ymm0, ymm0, ymmword ptr [r11 + r10]
+ 1      5     0.50    *                   mov	rdi, qword ptr [rdi + 32]
+ 1      1     0.50                        vpopcntq	ymm0, ymm0
+ 2      4     2.00                        vpmovqb	xmm0, ymm0
+ 1      0     0.17                        vpxor	xmm1, xmm1, xmm1
+ 1      3     1.00                        vpsadbw	xmm0, xmm0, xmm1
+ 1      2     1.00                        vmovq	r9, xmm0
+ 1      1     0.25                        mov	r10, r9
+ 1      1     0.25                        neg	r10
+ 1      1     0.25                        cmp	r8, 256
+ 1      5     0.50    *                   movzx	ecx, word ptr [rdx + rcx + 62]
+ 1      1     0.50                        cmovae	r10, r9
+ 1      1     0.50                        shr	rsi, 11
+ 1      1     0.25                        mov	rdx, rsi
+ 3      4     1.00                        mulx	rax, rax, rax
+ 1      5     0.50    *                   mov	eax, dword ptr [rdi + 4*rax]
+ 1      1     0.50                        shl	rax, 11
+ 1      1     0.25                        add	rax, rcx
+ 1      1     0.25                        add	rax, r10
+ 2      6     0.50    *                   pop	rbx
+ 4      0     0.67                  U     vzeroupper
+ 3      7     1.00                  U     ret
+
+
+Resources:
+[0]   - ICXDivider
+[1]   - ICXFPDivider
+[2]   - ICXPort0
+[3]   - ICXPort1
+[4]   - ICXPort2
+[5]   - ICXPort3
+[6]   - ICXPort4
+[7]   - ICXPort5
+[8]   - ICXPort6
+[9]   - ICXPort7
+[10]  - ICXPort8
+[11]  - ICXPort9
+
+
+Resource pressure per iteration:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   
+ -      -     8.95   8.85   4.00   4.00   1.00   9.26   8.95   1.00    -      -     
+
+Resource pressure by instruction:
+[0]    [1]    [2]    [3]    [4]    [5]    [6]    [7]    [8]    [9]    [10]   [11]   Instructions:
+ -      -     0.21   0.26    -      -     1.00   0.23   0.31   1.00    -      -     push	rbx
+ -      -     0.26   0.38    -      -      -     0.13   0.23    -      -      -     mov	rdx, rsi
+ -      -     0.49    -      -      -      -      -     0.51    -      -      -     shr	rdx, 4
+ -      -     0.23   0.38    -      -      -     0.20   0.18    -      -      -     movabs	rax, 595056260442243601
+ -      -      -     1.00    -      -      -     1.00    -      -      -      -     mulx	rcx, rcx, rax
+ -      -      -     1.00    -      -      -      -      -      -      -      -     imul	rdx, rcx, 496
+ -      -     0.13   0.49    -      -      -     0.20   0.18    -      -      -     mov	r8, rsi
+ -      -     0.23   0.41    -      -      -     0.10   0.26    -      -      -     sub	r8, rdx
+ -      -     0.38    -      -      -      -      -     0.62    -      -      -     shl	rcx, 6
+ -      -      -      -     0.36   0.64    -      -      -      -      -      -     mov	rdx, qword ptr [rdi + 8]
+ -      -      -     0.54    -      -      -     0.46    -      -      -      -     lea	r9, [rdx + rcx]
+ -      -     0.31   0.21    -      -      -     0.20   0.28    -      -      -     mov	r10d, r8d
+ -      -     0.44    -      -      -      -      -     0.56    -      -      -     shl	r10d, 5
+ -      -     0.21   0.26    -      -      -     0.26   0.28    -      -      -     mov	ebx, r8d
+ -      -     0.46    -      -      -      -      -     0.54    -      -      -     shr	ebx, 3
+ -      -     0.33   0.23    -      -      -     0.18   0.26    -      -      -     and	ebx, 32
+ -      -      -      -     0.49   0.51    -      -      -      -      -      -     vmovdqu	ymm0, ymmword ptr [rbx + r9]
+ -      -     0.26   0.38   0.51   0.49    -     0.36    -      -      -      -     vpand	ymm0, ymm0, ymmword ptr [r11 + r10]
+ -      -      -      -     0.49   0.51    -      -      -      -      -      -     mov	rdi, qword ptr [rdi + 32]
+ -      -     0.28   0.72    -      -      -      -      -      -      -      -     vpopcntq	ymm0, ymm0
+ -      -      -      -      -      -      -     2.00    -      -      -      -     vpmovqb	xmm0, ymm0
+ -      -      -      -      -      -      -      -      -      -      -      -     vpxor	xmm1, xmm1, xmm1
+ -      -      -      -      -      -      -     1.00    -      -      -      -     vpsadbw	xmm0, xmm0, xmm1
+ -      -     1.00    -      -      -      -      -      -      -      -      -     vmovq	r9, xmm0
+ -      -     0.28   0.13    -      -      -     0.26   0.33    -      -      -     mov	r10, r9
+ -      -     0.23   0.13    -      -      -     0.44   0.21    -      -      -     neg	r10
+ -      -     0.13   0.38    -      -      -     0.31   0.18    -      -      -     cmp	r8, 256
+ -      -      -      -     0.38   0.62    -      -      -      -      -      -     movzx	ecx, word ptr [rdx + rcx + 62]
+ -      -     0.49    -      -      -      -      -     0.51    -      -      -     cmovae	r10, r9
+ -      -     0.54    -      -      -      -      -     0.46    -      -      -     shr	rsi, 11
+ -      -     0.31   0.23    -      -      -     0.13   0.33    -      -      -     mov	rdx, rsi
+ -      -      -     1.00    -      -      -     1.00    -      -      -      -     mulx	rax, rax, rax
+ -      -      -      -     0.64   0.36    -      -      -      -      -      -     mov	eax, dword ptr [rdi + 4*rax]
+ -      -     0.26    -      -      -      -      -     0.74    -      -      -     shl	rax, 11
+ -      -     0.33   0.15    -      -      -     0.13   0.38    -      -      -     add	rax, rcx
+ -      -     0.33   0.13    -      -      -     0.26   0.28    -      -      -     add	rax, r10
+ -      -     0.28   0.21   0.56   0.44    -     0.20   0.31    -      -      -     pop	rbx
+ -      -      -      -      -      -      -      -      -      -      -      -     vzeroupper
+ -      -     0.56   0.23   0.56   0.44    -     0.21   1.00    -      -      -     ret
